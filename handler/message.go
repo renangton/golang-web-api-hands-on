@@ -3,6 +3,8 @@ package handler
 import (
 	"net/http"
 
+	"dependency-injection-sample/usecase"
+
 	"github.com/go-chi/render"
 )
 
@@ -10,16 +12,20 @@ type Message interface {
 	Get(w http.ResponseWriter, r *http.Request)
 }
 
-type messageHandler struct{}
+type messageHandler struct {
+	useCase usecase.Message
+}
 
-func NewMessage() Message {
-	return &messageHandler{}
+func NewMessage(useCase usecase.Message) Message {
+	return &messageHandler{
+		useCase: useCase,
+	}
 }
 
 func (m *messageHandler) Get(w http.ResponseWriter, r *http.Request) {
-	message := "There is always light behind the clouds."
+	ctx := r.Context()
 	render.Status(r, http.StatusOK)
 	render.JSON(w, r, map[string]string{
-		"message": message,
+		"message": m.useCase.Get(ctx),
 	})
 }

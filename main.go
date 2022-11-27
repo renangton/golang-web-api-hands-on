@@ -9,12 +9,14 @@ import (
 	"dependency-injection-sample/handler"
 	"dependency-injection-sample/infra/dao"
 	"dependency-injection-sample/usecase"
+
 	"github.com/go-chi/chi/v5"
 )
 
 func main() {
 	r := chi.NewRouter()
-	messageHandler := handler.NewMessage()
+	messageUseCase := usecase.NewMessage()
+	messageHandler := handler.NewMessage(messageUseCase)
 	bookRepo := dao.NewBook()
 	bookUseCase := usecase.NewBook(bookRepo)
 	bookHandler := handler.NewBookHandler(bookUseCase)
