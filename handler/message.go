@@ -24,9 +24,8 @@ func (m *messageHandler) Get(w http.ResponseWriter, r *http.Request) {
 		"If you can dream it, you can do it.",
 		"Love the life you live. Live the life you love.",
 	}
-	randomNumber := rand.Intn(len(message))
 	render.Status(r, http.StatusOK)
 	render.JSON(w, r, map[string]string{
-		"message": message[randomNumber],
+		"message": message[rand.Intn(len(message))],
 	})
 }
