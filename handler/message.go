@@ -4,6 +4,8 @@ import (
 	"math/rand"
 	"net/http"
 
+	"dependency-injection-sample/usecase"
+
 	"github.com/go-chi/render"
 )
 
@@ -11,21 +13,20 @@ type Message interface {
 	Get(w http.ResponseWriter, r *http.Request)
 }
 
-type messageHandler struct{}
+type messageHandler struct {
+	useCase usecase.Message
+}
 
-func NewMessage() Message {
-	return &messageHandler{}
+func NewMessage(useCase usecase.Message) Message {
+	return &messageHandler{
+		useCase: useCase,
+	}
 }
 
 func (m *messageHandler) Get(w http.ResponseWriter, r *http.Request) {
-	message := []string{
-		"There is always light behind the clouds.",
-		"Change before you have to.",
-		"If you can dream it, you can do it.",
-		"Love the life you live. Live the life you love.",
-	}
+	ctx := r.Context()
 	render.Status(r, http.StatusOK)
 	render.JSON(w, r, map[string]string{
-		"message": message[rand.Intn(len(message))],
+		"message": m.useCase.Get(ctx),
 	})
 }
