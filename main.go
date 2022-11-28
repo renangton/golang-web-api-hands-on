@@ -9,6 +9,7 @@ import (
 	"dependency-injection-sample/handler"
 	"dependency-injection-sample/infra/dao"
 	"dependency-injection-sample/usecase"
+
 	"github.com/go-chi/chi/v5"
 )
 
@@ -21,7 +22,7 @@ func main() {
 
 	r.Get("/hello", func(w http.ResponseWriter, r *http.Request) {
 		render.JSON(w, r, map[string]string{
-			"message": "hello world",
+			"message": "good morning",
 		})
 	})
 	r.Get("/message", messageHandler.Get)

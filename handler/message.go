@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"math/rand"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -17,9 +18,14 @@ func NewMessage() Message {
 }
 
 func (m *messageHandler) Get(w http.ResponseWriter, r *http.Request) {
-	message := "There is always light behind the clouds."
+	message := []string{
+		"There is always light behind the clouds.",
+		"Change before you have to.",
+		"If you can dream it, you can do it.",
+		"Love the life you live. Live the life you love.",
+	}
 	render.Status(r, http.StatusOK)
 	render.JSON(w, r, map[string]string{
-		"message": message,
+		"message": message[rand.Intn(len(message))],
 	})
 }
