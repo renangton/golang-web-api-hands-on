@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"math/rand"
 	"net/http"
 
 	"dependency-injection-sample/usecase"
