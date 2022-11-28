@@ -2,25 +2,24 @@ package usecase
 
 import (
 	"context"
-	"math/rand"
+
+	"dependency-injection-sample/domain/repository"
 )
 
 type Message interface {
 	Get(ctx context.Context) string
 }
 
-type messageUseCase struct{}
+type messageUseCase struct {
+	messageRepo repository.Message
+}
 
-func NewMessage() Message {
-	return &messageUseCase{}
+func NewMessage(messageRepo repository.Message) Message {
+	return &messageUseCase{
+		messageRepo: messageRepo,
+	}
 }
 
 func (m *messageUseCase) Get(ctx context.Context) string {
-	message := []string{
-		"There is always light behind the clouds.",
-		"Change before you have to.",
-		"If you can dream it, you can do it.",
-		"Love the life you live. Live the life you love.",
-	}
-	return message[rand.Intn(len(message))]
+	return m.messageRepo.RandomMessage()
 }
